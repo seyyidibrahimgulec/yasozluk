@@ -4,6 +4,7 @@
 - [Yet Another Ekşi Sözlük Clone](#yet-another-ekşi-sözlük-clone)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Contributors](#contributors)
 
 # Installation
 
@@ -13,9 +14,6 @@
 
 2. Create a [virtual environment](https://docs.python.org/3/library/venv.html#creating-virtual-environments
    "Official documentation") in the project folder:
-
-    `$ cd ~/language_course`
-
 
     `$ python -m venv env`
 
@@ -27,7 +25,7 @@
 
     `$ pip install -r requirements.txt`
 
-5. Migrate
+5. Migrate database
 
     `$ python manage.py migrate`
 
@@ -40,7 +38,8 @@
 2. Open http://localhost:8000 to view it in the browser.
 
 # Contributors
-* [KaratasFurkan](https://github.com/KaratasFurkan)
-* [budancamanak](https://github.com/budancamanak)
-* [mertturkmenoglu](https://github.com/mertturkmenoglu)
-* [seyyidibrahimgulec](https://github.com/seyyidibrahimgulec)
+
+- [KaratasFurkan](https://github.com/KaratasFurkan)
+- [budancamanak](https://github.com/budancamanak)
+- [mertturkmenoglu](https://github.com/mertturkmenoglu)
+- [seyyidibrahimgulec](https://github.com/seyyidibrahimgulec)
