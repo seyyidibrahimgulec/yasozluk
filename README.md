@@ -15,7 +15,7 @@
 2. Create a [virtual environment](https://docs.python.org/3/library/venv.html#creating-virtual-environments
    "Official documentation") in the project folder:
 
-    `$ python -m venv env`
+    `$ python -m venv venv`
 
 3. Activate the virtual environment:
 
@@ -24,8 +24,13 @@
 4. Install the requirements:
 
     `$ pip install -r requirements.txt`
+    
+5. Create database
 
-5. Migrate database
+    `$ psql`
+    `$ CREATE DATABASE yasozluk;`
+
+6. Migrate database
 
     `$ python manage.py migrate`
 
