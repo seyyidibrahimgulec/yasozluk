@@ -1,4 +1,3 @@
-
 # Created by https://www.gitignore.io/api/code,emacs,django,python,pycharm
 # Edit at https://www.gitignore.io/?templates=code,emacs,django,python,pycharm
 
@@ -312,3 +311,12 @@ fabric.properties
 # Pyre type checker
 
 # End of https://www.gitignore.io/api/code,emacs,django,python,pycharm
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
