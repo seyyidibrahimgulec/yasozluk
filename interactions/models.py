@@ -1,3 +1,29 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
+from interactions.enums import VoteType
+from contents.models import Entry
+from enumfields import EnumField
+
+
+class Vote(models.Model):
+    vote = EnumField(enum=VoteType, null=True)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    entry = models.ForeignKey(to=Entry, on_delete=models.CASCADE)
+
+
+class Block(models.Model):
+    blocked_by = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='blocked_by')
+    blocked_user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='blocked_user')
+
+
+class Favorite(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    entry = models.ForeignKey(to=Entry, on_delete=models.CASCADE)
+
+
+class Message(models.Model):
+    text = models.TextField()
+    send_by = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='send_by')
+    send_to = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='send_to')
+    created_at = models.DateTimeField(auto_now_add=True)
