@@ -20,5 +20,5 @@ from contents.views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", contents_views.home, name="home"),
+    path("", home, name="home"),
 ]
