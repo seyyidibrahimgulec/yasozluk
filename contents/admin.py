@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from contents.models import Channel, Topic, Entry
+
+
+admin.site.register(Channel)
+admin.site.register(Topic)
+admin.site.register(Entry)
