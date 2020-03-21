@@ -1,8 +1,7 @@
 import os
 import sys
-from random import randint, random
+from random import randint
 
-from django.db import transaction
 from django.core.wsgi import get_wsgi_application
 
 
