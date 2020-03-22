@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'contents',
     'interactions',
     'users',
+
+    # Third Party Apps
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
