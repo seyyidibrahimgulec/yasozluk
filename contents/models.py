@@ -1,14 +1,25 @@
-from django.db import models
+import datetime
+from random import sample
+
 from django.contrib.auth.models import User
+from django.db import models
 from django.db.models import Count, Q
 
 from interactions.enums import VoteType
 
 
 class Topic(models.Model):
-    subject = models.CharField(max_length=255)
-    starter_user = models.ForeignKey(to=User, on_delete=models.PROTECT)
-    channels = models.ManyToManyField(to='Channel')
+    subject = models.CharField(max_length=255, unique=True)
+    channels = models.ManyToManyField(to="Channel")
+
+    @property
+    def updated_at(self):
+        return self.entry_set.order_by("-created_at").first().updated_at
+
+    def get_today_entry_count(self):
+        return self.entry_set.filter(
+            created_at__startswith=datetime.date.today()
+        ).count()
 
 
 class Entry(models.Model):
