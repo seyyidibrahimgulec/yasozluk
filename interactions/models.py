@@ -11,6 +11,9 @@ class Vote(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     entry = models.ForeignKey(to=Entry, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return str(self.vote)
+
 
 class Block(models.Model):
     blocked_by = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='blocked_by')

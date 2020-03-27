@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-3 p-5">
+        {% for topic in topics %}
+          <p>{{ topic.subject }} ({{ topic.get_today_entry_count }})</p>
+        {% endfor %}
+      </div>
+      <div class="col-6 p-5 border-right border-left">
+        {% for entry in most_liked_entries %}
+          <h4>{{ entry.topic.subject }}</h4>
+          {% include "includes/entry.html" %}
+        {% endfor %}
+      </div>
+      <div class="col-3">
+
+      </div>
+    </div>
+  </div>
+{% endblock content %}
