@@ -30,12 +30,16 @@ class Entry(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
     @property
-    def upvotes(self):
+    def upvote_count(self):
         return self.vote_set.filter(vote=VoteType.upvote).count()
 
     @property
-    def downvotes(self):
+    def downvote_count(self):
         return self.vote_set.filter(vote=VoteType.downvote).count()
+
+    @property
+    def favorite_count(self):
+        return self.favorite_set.count()
 
     def get_random_most_liked_entries(top_n=20, pick_n=5):
         # TODO: increase top_n after database increased
