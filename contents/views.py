@@ -1,5 +1,4 @@
 import datetime
-from django.shortcuts import render
 from django.views.generic import ListView
 
 from contents.models import Entry, Topic
