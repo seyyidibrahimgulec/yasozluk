@@ -26,7 +26,7 @@
                     {% endfor %}
                 </div>
             </div>
-            {% if pageCount > 0 %}
+            {% if pageCount > 1 %}
             <div style="float:right;border-bottom: 1px solid #80808052;" class="pagination">
                     <span class="step-links">
                         {% if page_obj.has_previous %}
@@ -43,6 +43,15 @@
                             <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
                         {% endif %}
                     </span>
+            </div>
+            {% else %}
+            <div>
+                <p>
+                    <h2>Oops</h2>
+                </p>
+                <p>
+                    <h6>No entries found.</h6>
+                </p>
             </div>
             {% endif %}
             <div style="clear:both;margin-top: 30px;">
