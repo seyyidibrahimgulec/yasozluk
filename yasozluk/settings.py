@@ -38,10 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'widget_tweaks',
     # Custom Apps
     'contents',
     'interactions',
     'users',
+
 ]
 
 MIDDLEWARE = [
@@ -84,7 +86,6 @@ DATABASES = {
         'NAME': 'yasozluk',
         'USER': 'postgres',
         'PORT': '5432',
-        'PASSWORD':'1234'
     }
 }
 
