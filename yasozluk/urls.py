@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.urls import path
 
 from contents.views import HomePageListView
+from contents.views import entryListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", HomePageListView.as_view(), name="home"),
+    path('topic/<int:num>/', entryListView, name="topicEntries")
 ]

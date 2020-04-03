@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="container-fluid">
+    {% if fail %}
+    <h1>{{fail}}</h1>
+    {%endif%}
+    <div class="row">
+        <div class="col-3 p-5">
+            {% for topic in topics %}
+            <p><a href="{% url 'topicEntries' num=topic.pk %}">{{ topic.subject }}</a> ({{ topic.get_entry_set }})</p>
+            {% endfor %}
+        </div>
+        <div class="col-6 p-5 border-right border-left">
+            <div class="row">
+                <div class="col-12">
+                    <h1>{{currentTopic.subject}}</h1>
+                </div>
+                <div class="col-md-12">
+                    {% for ch in channels %}
+                    <a>
+                        <h7 style="font-style:italic">{{ch.name}}</h7>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% if pageCount > 0 %}
+            <div style="float:right;border-bottom: 1px solid #80808052;" class="pagination">
+                    <span class="step-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                        {% endif %}
+
+                        <span class="current">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        </span>
+
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">next</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+            </div>
+            {% endif %}
+            <div style="clear:both;margin-top: 30px;">
+                {% for entry in page_obj %}
+                {% include "includes/entry.html" %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-3">
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
