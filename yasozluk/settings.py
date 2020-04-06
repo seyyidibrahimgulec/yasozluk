@@ -38,12 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'widget_tweaks',
     # Custom Apps
     'contents',
     'interactions',
     'users',
 
+    # Third Party Apps
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -86,6 +87,7 @@ DATABASES = {
         'NAME': 'yasozluk',
         'USER': 'postgres',
         'PORT': '5432',
+
     }
 }
 
@@ -131,3 +133,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+LOGOUT_REDIRECT_URL = "home"
+LOGIN_REDIRECT_URL = "home"
+LOGIN_URL = "login"
