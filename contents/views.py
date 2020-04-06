@@ -43,8 +43,7 @@ def entryListView(request, num=-1):
         entries = paginator.page(paginator.num_pages)
 
     return render(request, 'topicEntries.html',
-                  {'entries': entries, 'topics': topics, 'currentTopic': currentTopic, 'channels': channels,
-                   'pageCount': paginator.num_pages})
+                  {'entries': entries, 'topics': topics, 'currentTopic': currentTopic, 'channels': channels})
 
 
 def newTopic(request):
