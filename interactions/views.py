@@ -11,7 +11,7 @@ def addVote(request):
     entry = Entry.objects.get(pk=entryId)
     user = request.user
     type = VoteType.upvote
-    if value == -1:
+    if value == "-1":
         type = VoteType.downvote
 
     vote = Vote(vote=type, user=user, entry=entry)
