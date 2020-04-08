@@ -1,0 +1,15 @@
+{% if entry.send_by.id == me %}
+<div class="mb-1 pt-1 pl-1 pr-2 pb-1" style="border-bottom: 1px solid #989898;">
+    <p style="font-size: 14px;">{{ entry.text }}</p>
+    <p class="small text-right" style="font-style:italic;font-size: 11px;">
+        @:{{entry.created_at|date:"d.m.Y H:i" }}
+    </p>
+</div>
+{% else %}
+<div class="mb-1 pt-1 pl-1 pr-2 pb-1" style="border-bottom: 1px solid #989898;background:#8dcbda">
+    <p style="font-size: 14px;">{{ entry.text }}</p>
+    <p class="small text-right" style="font-style:italic;font-size: 11px;">
+        @:{{entry.created_at|date:"d.m.Y H:i" }}
+    </p>
+</div>
+{% endif %}
