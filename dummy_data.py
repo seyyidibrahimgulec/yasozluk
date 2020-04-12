@@ -38,13 +38,11 @@ for name in channel_names:
 # Topics
 for i in range(100):
     subject = "Subject {}".format(i+1)
-    starter_user = User.objects.get(pk=randint(1, 100))
-    topic, created = Topic.objects.get_or_create(subject=subject,
-                                                 starter_user=starter_user)
+    topic, created = Topic.objects.get_or_create(subject=subject)
     topic.channels.add(Channel.objects.get(pk=randint(1, len(channel_names))))
     topic.channels.add(Channel.objects.get(pk=randint(1, len(channel_names))))
     topic.save()
-    print("Created {} topic by {}".format(subject, starter_user))
+    print("Created {} topic".format(subject))
 
 # Entries
 for i in range(100):

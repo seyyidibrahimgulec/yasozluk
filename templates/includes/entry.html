@@ -1,0 +1,8 @@
+<div class="mb-5">
+  <p>{{ entry.text }}</p>
+  <p class="small text-right">
+    up:{{ entry.upvote_count }} down:{{ entry.downvote_count }}
+    favorites:{{entry.favorite_count }} by:{{ entry.created_by }}
+    at:{{entry.created_at|date:"d.m.Y H:i" }}
+  </p>
+</div>
