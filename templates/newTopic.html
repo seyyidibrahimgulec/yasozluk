@@ -20,15 +20,13 @@
       <div class="col-6 p-5 border-right border-left">
         <div class="row">
           <div class="col-12">
-            <h1>New Topic</h1>
+            <h1>Yeni Başlık Girişi</h1>
           </div>
         </div>
         <form method="post">
-          <form method="post">
-            {% csrf_token %}
-            {% include 'includes/form.html' %}
-            <button type="submit" class="btn btn-success">Post</button>
-          </form>
+          {% csrf_token %}
+          {% include 'includes/newTopicForm.html' %}
+          <button type="submit" class="btn btn-success" style="float: right;">Post</button>
         </form>
         <form>
 

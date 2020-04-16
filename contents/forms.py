@@ -1,5 +1,6 @@
 from django import forms
 from .models import Topic, Channel
+from contents.models import Entry
 
 
 class NewTopicForm(forms.ModelForm):
@@ -10,4 +11,17 @@ class NewTopicForm(forms.ModelForm):
 
     class Meta:
         model = Topic
+        labels = {
+            "subject": "Başlığı girin...",
+            "channels": "Etiketleri seçin..."
+        }
         fields = '__all__'
+
+
+class NewEntryForm(forms.ModelForm):
+    class Meta:
+        model = Entry
+        labels = {
+            "text": "İlk entry'yi siz girin..."
+        }
+        exclude = ('topic', 'created_by',)

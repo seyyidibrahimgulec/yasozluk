@@ -4,7 +4,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
 
-from contents.forms import NewTopicForm
+from contents.forms import NewEntryForm, NewTopicForm
 from contents.models import Entry, Topic, Channel
 
 
@@ -51,14 +51,21 @@ def newTopic(request):
     channels = Channel.objects.all().order_by("name")
 
     if request.method == 'POST':
-        form = NewTopicForm(request.POST)
-        if form.is_valid():
-            newSaved = form.save()
-            print("saved with:", newSaved.pk)
+        topicForm = NewTopicForm(request.POST, instance=Topic())
+        entryForm = NewEntryForm(request.POST, instance=Entry(), prefix="entry_")
+        if topicForm.is_valid() and entryForm.is_valid():
+            newSaved = topicForm.save()
+            newEntry = entryForm.save(commit=False)
+            newEntry.created_by = request.user
+            newEntry.topic = newSaved
+            newEntry.save()
             return redirect('topicEntries', num=newSaved.pk)
     else:
-        form = NewTopicForm()
-    return render(request, 'newTopic.html', {'form': form, 'topics': topics, 'channels': channels})
+        topicForm = NewTopicForm(instance=Topic())
+        entryForm = NewEntryForm(instance=Entry(), prefix="entry_")
+    allForms = [topicForm, entryForm]
+    return render(request, 'newTopic.html',
+                  {'allForms': allForms, 'topics': topics, 'channels': channels})
 
 
 def tonumeric(s, default):
