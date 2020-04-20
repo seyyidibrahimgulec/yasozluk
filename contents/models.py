@@ -21,6 +21,9 @@ class Topic(models.Model):
             created_at__startswith=datetime.date.today()
         ).count()
 
+    def get_entry_set(self):
+        return self.entry_set.count()
+
 
 class Entry(models.Model):
     text = models.TextField()
