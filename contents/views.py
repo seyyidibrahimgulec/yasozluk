@@ -3,6 +3,7 @@ import datetime
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
+from django.contrib.auth.decorators import login_required
 
 from contents.forms import NewEntryForm, NewTopicForm
 from contents.models import Entry, Topic, Channel
@@ -10,9 +11,7 @@ from contents.models import Entry, Topic, Channel
 
 class HomePageListView(ListView):
     model = Topic
-    queryset = Topic.objects.filter(
-        entry__created_at__startswith=datetime.date.today()
-    ).order_by("-entry__created_at")
+    queryset = Topic.objects.order_by("-entry__created_at")
     context_object_name = "topics"
     template_name = "homepage.html"
 
@@ -25,7 +24,7 @@ def entryListView(request, num=-1):
     # all topics are being fetched at the moment.
     # will be put some kind of pagination over here
     # or will be moved to somewhere else
-    topics = Topic.objects.order_by("-id")
+    topics = Topic.objects.order_by("-entry__created_at")
     topicEntries = Entry.objects.filter(topic__pk=num).order_by("-created_at")
     currentTopic = Topic.objects.get(pk=num)
     channels = currentTopic.channels.all()
@@ -46,6 +45,7 @@ def entryListView(request, num=-1):
                   {'entries': entries, 'topics': topics, 'currentTopic': currentTopic, 'channels': channels})
 
 
+@login_required
 def newTopic(request):
     topics = Topic.objects.order_by("-id")
     channels = Channel.objects.all().order_by("name")
@@ -65,7 +65,7 @@ def newTopic(request):
         entryForm = NewEntryForm(instance=Entry(), prefix="entry_")
     allForms = [topicForm, entryForm]
     return render(request, 'newTopic.html',
-                  {'allForms': allForms, 'topics': topics, 'channels': channels})
+                  {'topicForm': topicForm, 'entryForm': entryForm,'topics': topics, 'channels': channels})
 
 
 def tonumeric(s, default):
