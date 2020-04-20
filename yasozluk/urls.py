@@ -19,7 +19,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 
 from users.views import SignupView
 from contents.views import HomePageListView
-from contents.views import entryListView
+from contents.views import entryListView, newTopic
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,5 +27,6 @@ urlpatterns = [
     path("login/", LoginView.as_view(template_name="login.html"), name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("", HomePageListView.as_view(), name="home"),
-    path('topic/<int:num>/', entryListView, name="topicEntries")
+    path('topic/<int:num>/', entryListView, name="topicEntries"),
+    path('topic/new', newTopic, name="newTopic")
 ]
