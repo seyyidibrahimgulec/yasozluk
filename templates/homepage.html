@@ -5,17 +5,21 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-3 p-5">
+        <div class="newTopicLink">
+          <a style="font-size: x-large;" class="btn btn-outline-primary" href="{% url 'newTopic'%}">Yeni
+            Başlık</a>
+        </div>
         {% for topic in topics %}
           <p>
-              <a href="{% url 'topicEntries' num=topic.pk %}" >
-                {{ topic.subject }}</a> ({{ topic.get_today_entry_count }})
+            <a href="{% url 'topicEntries' num=topic.pk %}" >
+              {{ topic.subject }}</a> ({{ topic.get_today_entry_count }})
           </p>
         {% endfor %}
       </div>
       <div class="col-6 p-5 border-right border-left">
         {% for entry in most_liked_entries %}
           <h4>
-             <a href="{% url 'topicEntries' num=entry.topic.pk %}" >{{ entry.topic.subject }}</a>
+            <a href="{% url 'topicEntries' num=entry.topic.pk %}" >{{ entry.topic.subject }}</a>
           </h4>
           {% include "includes/entry.html" %}
         {% endfor %}
