@@ -5,6 +5,7 @@
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributors](#contributors)
+- [Screenshots](#screenshots)
 
 # Installation
 
