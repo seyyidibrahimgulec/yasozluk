@@ -2,74 +2,64 @@ import datetime
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, redirect
-from django.views.generic import ListView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView
+from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 
-from contents.forms import NewEntryForm, NewTopicForm
+from contents.forms import EntryForm, TopicForm
 from contents.models import Entry, Topic, Channel
 
 
 class HomePageListView(ListView):
-    model = Topic
-    queryset = Topic.objects.order_by("-entry__created_at")
-    context_object_name = "topics"
+    context_object_name = "most_liked_entries"
     template_name = "homepage.html"
 
     def get_context_data(self, **kwargs):
-        kwargs["most_liked_entries"] = Entry.get_random_most_liked_entries()
+        kwargs["topics"] = Topic.objects.order_by("-entry__created_at")
+        return super().get_context_data(**kwargs)
+
+    def get_queryset(self):
+        if self.queryset is not None or self.model is not None:
+            return super().get_queryset()
+        return Entry.get_random_most_liked_entries()
+
+
+class EntryListView(HomePageListView):
+    context_object_name = "entries"
+    template_name = "topic_entries.html"
+    paginate_by = 10
+
+    def get_queryset(self):
+        return (
+            Topic.objects.get(pk=self.kwargs["topic_pk"])
+            .entry_set.order_by("created_at")
+        )
+
+    def get_context_data(self, **kwargs):
+        kwargs["topic"] = Topic.objects.get(pk=self.kwargs["topic_pk"])
         return super().get_context_data(**kwargs)
 
 
-def entryListView(request, num=-1):
-    # all topics are being fetched at the moment.
-    # will be put some kind of pagination over here
-    # or will be moved to somewhere else
-    topics = Topic.objects.order_by("-entry__created_at")
-    topicEntries = Entry.objects.filter(topic__pk=num).order_by("-created_at")
-    currentTopic = Topic.objects.get(pk=num)
-    channels = currentTopic.channels.all()
-    page = request.GET.get('page', 1)
+@method_decorator(login_required, name="dispatch")
+class NewTopicView(HomePageListView):
+    template_name = "new_topic.html"
 
-    paginator = Paginator(topicEntries, 10)  # Show 25 contacts per page.
-    try:
-        entries = paginator.page(page)
-    except PageNotAnInteger:
-        # fallback to the first page
-        entries = paginator.page(1)
-    except EmptyPage:
-        # probably the user tried to add a page number
-        # in the url, so we fallback to the last page
-        entries = paginator.page(paginator.num_pages)
+    def get_context_data(self, **kwargs):
+        kwargs["topic_form"] = TopicForm()
+        kwargs["entry_form"] = EntryForm()
+        return super().get_context_data(**kwargs)
 
-    return render(request, 'topicEntries.html',
-                  {'entries': entries, 'topics': topics, 'currentTopic': currentTopic, 'channels': channels})
+    def post(self, request):
+        topic_form = TopicForm(request.POST)
+        entry_form = EntryForm(request.POST)
 
+        if topic_form.is_valid() and entry_form.is_valid():
+            topic = topic_form.save()
 
-@login_required
-def newTopic(request):
-    topics = Topic.objects.order_by("-id")
-    channels = Channel.objects.all().order_by("name")
+            entry = entry_form.save(commit=False)
+            entry.topic = topic
+            entry.created_by = request.user
+            entry.save()
 
-    if request.method == 'POST':
-        topicForm = NewTopicForm(request.POST, instance=Topic())
-        entryForm = NewEntryForm(request.POST, instance=Entry(), prefix="entry_")
-        if topicForm.is_valid() and entryForm.is_valid():
-            newSaved = topicForm.save()
-            newEntry = entryForm.save(commit=False)
-            newEntry.created_by = request.user
-            newEntry.topic = newSaved
-            newEntry.save()
-            return redirect('topicEntries', num=newSaved.pk)
-    else:
-        topicForm = NewTopicForm(instance=Topic())
-        entryForm = NewEntryForm(instance=Entry(), prefix="entry_")
-    allForms = [topicForm, entryForm]
-    return render(request, 'newTopic.html',
-                  {'topicForm': topicForm, 'entryForm': entryForm,'topics': topics, 'channels': channels})
-
-
-def tonumeric(s, default):
-    try:
-        return int(s)
-    except Exception:
-        return default
+            return redirect("topic_entries", topic_pk=topic.pk)
