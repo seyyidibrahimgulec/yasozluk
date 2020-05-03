@@ -16,7 +16,7 @@ class HomePageListView(ListView):
     template_name = "homepage.html"
 
     def get_context_data(self, **kwargs):
-        kwargs["topics"] = Topic.objects.order_by("-entry__created_at")
+        kwargs["topics"] = Topic.objects.order_by("-entry__created_at")[:20]
         return super().get_context_data(**kwargs)
 
     def get_queryset(self):
