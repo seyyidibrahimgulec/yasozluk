@@ -1,0 +1,8 @@
+<div class="border-bottom mb-2 d-flex align-items-center">
+  <h5>Topics</h5>
+  <a class="btn btn-outline-primary mb-2 ml-auto" href="{% url 'new_topic'%}"><h6 class="m-0">New Topic</h6></a>
+</div>
+
+{% for topic in topics %}
+  <p><a href="{% url 'topic_entries' topic.pk %}">{{ topic.subject }}</a> ({{ topic.get_entry_set }})</p>
+{% endfor %}

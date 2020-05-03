@@ -60,7 +60,19 @@
         </div>
       </nav>
       <div class="container-fluid">
-        {% block content %} {% endblock %}
+        {% block whole_frame %}
+          <div class="row">
+            <div class="col-3 p-5">
+              {% block left_frame %}{% endblock left_frame %}
+            </div>
+            <div class="col-6 p-5 border-right border-left">
+              {% block middle_frame %}{% endblock middle_frame %}
+            </div>
+            <div class="col-3 p-5">
+              {% block right_frame %}{% endblock right_frame %}
+            </div>
+          </div>
+        {% endblock whole_frame %}
       </div>
     {% endblock body %}
     <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>

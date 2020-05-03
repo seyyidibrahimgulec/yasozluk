@@ -1,13 +1,15 @@
 from django import forms
-from .models import Topic, Channel
+from contents.models import Topic, Entry
 
 
-class NewTopicForm(forms.ModelForm):
-    # message = forms.CharField(widget=forms.Textarea(), max_length=4000,
-    #                           help_text='The max length of the text is 4000.')
-    # channels = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple())
-    channels = forms.ModelMultipleChoiceField(queryset=Channel.objects.all())
-
+class TopicForm(forms.ModelForm):
     class Meta:
         model = Topic
         fields = '__all__'
+
+
+class EntryForm(forms.ModelForm):
+    class Meta:
+        model = Entry
+        fields = ["text"]
+        labels = {"text": "Entry"}
