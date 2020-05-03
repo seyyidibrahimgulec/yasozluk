@@ -17,8 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 
-from users.views import SignupView
-from contents.views import HomePageListView, EntryListView, NewTopicView
+from users.views import SignupView, UserProfileEntryView, UserProfileFavoriteView, UserProfileVoteView
+from contents.views import HomePageListView, EntryListView, NewTopicView 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,5 +27,8 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(), name="logout"),
     path("", HomePageListView.as_view(), name="home"),
     path("topic/<int:topic_pk>/", EntryListView.as_view(), name="topic_entries"),
-    path("topic/new", NewTopicView.as_view(), name="new_topic")
+    path("topic/new", NewTopicView.as_view(), name="new_topic"),
+    path("user_profile/entries/", UserProfileEntryView.as_view(), name="user_entries"),
+    path("user_profile/votes/", UserProfileVoteView.as_view(), name="user_votes"),
+    path("user_profile/favorites/", UserProfileFavoriteView.as_view(), name="user_favorites"),
 ]
