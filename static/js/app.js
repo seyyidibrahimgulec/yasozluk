@@ -27,7 +27,7 @@ function loadTodayInHistory() {
     }).fail(function (err) {
       console.log("error", err);
     });
-     $("#right_frame").append($("<h6>Yükleniyor..</h6><div class=\"loader\"></div>"))
+  $("#right_frame").append($("<h6>Yükleniyor..</h6><div class=\"loader\"></div>"))
 }
 
 function appendItemsToRight(rightFrame, items, title) {

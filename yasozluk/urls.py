@@ -22,12 +22,12 @@ from contents.views import EntryListView, HomePageListView, NewTopicView, today_
 from users.views import SignupView
 
 urlpatterns = [
-  path('admin/', admin.site.urls),
-  path("signup/", SignupView.as_view(), name="signup"),
-  path("login/", LoginView.as_view(template_name="login.html"), name="login"),
-  path("logout/", LogoutView.as_view(), name="logout"),
-  path("", HomePageListView.as_view(), name="home"),
-  path("topic/<int:topic_pk>/", EntryListView.as_view(), name="topic_entries"),
-  path("topic/new", NewTopicView.as_view(), name="new_topic"),
-  url(r'^ajax/today', today_in_history, name='today'),
+    path('admin/', admin.site.urls),
+    path("signup/", SignupView.as_view(), name="signup"),
+    path("login/", LoginView.as_view(template_name="login.html"), name="login"),
+    path("logout/", LogoutView.as_view(), name="logout"),
+    path("", HomePageListView.as_view(), name="home"),
+    path("topic/<int:topic_pk>/", EntryListView.as_view(), name="topic_entries"),
+    path("topic/new", NewTopicView.as_view(), name="new_topic"),
+    url(r'^ajax/today', today_in_history, name='today'),
 ]
