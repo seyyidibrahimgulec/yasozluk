@@ -1,4 +1,6 @@
 # from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from datetime import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -146,3 +148,20 @@ class MessageCreate(NewMessageAjax, CreateView):
     model = Message
     fields = ['text']
     success_url = reverse_lazy('allMessages')
+
+
+def poll_message_count(request):
+    last_poll = datetime.fromisoformat(request.GET.get("lastPoll"))
+    count = Message.objects.filter(
+        Q(send_to__id=request.user.id) & Q(created_at__gte=last_poll)).count()
+    print(count)
+    return JsonResponse({'count': count})
+
+
+def get_message_poll(request):
+    last_poll = datetime.fromisoformat(request.GET.get("lastPoll"))
+    data = Message.objects.filter(
+        Q(send_to__id=request.user.id) & Q(created_at__gte=last_poll)).order_by("created_at")
+
+    current_conversation = data
+    return render(request, 'includes/conversation.html', locals())

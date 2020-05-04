@@ -13,21 +13,34 @@
       <div class="row" style="float:right;font-style: italic;font-size: 12px;">{{item.date}}</div>
     </div>
   </div>
+  <script>
+     window.messageFilter=function(lastPollTime){
+       $.ajax({
+        url: "/ajax/messages/get?lastPoll=" + lastPollTime,
+        type: "get",
+        beforeSend: function (xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", cookie);
+        }
+      }
+    }).done(function (result) {$("#message-container")
+        $("#message-container").append(result);
+        scrollToLatest();
+    });
+  }
+  </script>
 {% endfor %}
 {% endblock left_frame %}
 
 {% block middle_frame %}
   <div class="col-12" style="padding: 0!important;">
     {% if conversationWith %}
-    <div class="col-12 conversation-with-header">
-      <span style="font-style: italic;">Conversation with :</span><span>{{conversationWith.username}}</span>
+    <div class="col-12 conversation-with-header"><span>{{conversationWith.username}} ile çene çalmalar</span>
     </div>
     {% endif %}
     <div style="height: 60vh;overflow-y: auto;">
       <div id="message-container" style="clear:both;margin-top: 30px;">
-        {% for entry in current_conversation %}
-        {% include "includes/message.html" %}
-        {% endfor %}
+        {% include "includes/conversation.html" %}
       </div>
     </div>
     {% if conversationWith %}

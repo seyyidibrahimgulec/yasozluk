@@ -1,13 +1,49 @@
 $(document).ready(function () {
   console.log("will call today api");
   loadTodayInHistory();
+  setInterval(() => {
+    console.log("polling new changes");
+    pollNewMessages();
+  }, 5000);
   scrollToLatest();
 });
 
+function pollNewMessages() {
+  let lastPollTime = getCookie("last_poll_time");
+  // lastPollTime = Date.now().toUTCString();
+  if (!lastPollTime) {
+    let s = new Date(Date.now()).toISOString()
+    lastPollTime = s.substring(0, s.length - 1)
+  }
+
+  $.ajax({
+      url: "/ajax/messages/count?lastPoll=" + lastPollTime,
+      type: "get",
+      beforeSend: function (xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", cookie);
+        }
+      }
+    })
+    .done(function (result) {
+      console.log(result);
+      let s = new Date(Date.now()).toISOString()
+      lastPollTime = s.substring(0, s.length - 1)
+      setCookie("last_poll_time", lastPollTime, 7);
+      if (result.count > 0) {
+        if (window.messageFilter)
+          window.messageFilter(lastPollTime);
+      }
+    }).fail(function (err) {
+      console.log("error", err);
+    });
+}
+
 function scrollToLatest() {
-  $(".message").last()[0].scrollIntoView({
-    behavior: "smooth"
-  });
+  if ($(".message").last()[0])
+    $(".message").last()[0].scrollIntoView({
+      behavior: "smooth"
+    });
 }
 
 function loadTodayInHistory() {
@@ -74,6 +110,31 @@ function sendMessage() {
       console.log("error", err);
 
     });
+}
+
+function setCookie(name, value, days) {
+  var expires = "";
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+function getCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+}
+
+function eraseCookie(name) {
+  document.cookie = name + '=; Max-Age=-99999999;';
 }
 
 function getCookie(name) {
