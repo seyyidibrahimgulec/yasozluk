@@ -13,19 +13,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import path
 
+from contents.views import EntryListView, HomePageListView, NewTopicView, today_in_history
 from users.views import SignupView
-from contents.views import HomePageListView, EntryListView, NewTopicView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("signup/", SignupView.as_view(), name="signup"),
-    path("login/", LoginView.as_view(template_name="login.html"), name="login"),
-    path("logout/", LogoutView.as_view(), name="logout"),
-    path("", HomePageListView.as_view(), name="home"),
-    path("topic/<int:topic_pk>/", EntryListView.as_view(), name="topic_entries"),
-    path("topic/new", NewTopicView.as_view(), name="new_topic")
+  path('admin/', admin.site.urls),
+  path("signup/", SignupView.as_view(), name="signup"),
+  path("login/", LoginView.as_view(template_name="login.html"), name="login"),
+  path("logout/", LogoutView.as_view(), name="logout"),
+  path("", HomePageListView.as_view(), name="home"),
+  path("topic/<int:topic_pk>/", EntryListView.as_view(), name="topic_entries"),
+  path("topic/new", NewTopicView.as_view(), name="new_topic"),
+  url(r'^ajax/today', today_in_history, name='today'),
 ]
