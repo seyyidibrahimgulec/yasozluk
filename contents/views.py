@@ -1,14 +1,16 @@
-import datetime
+import json
+import random
+import urllib.parse
+import urllib.request
 
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView
-from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.shortcuts import redirect
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView
 
 from contents.forms import EntryForm, TopicForm
-from contents.models import Entry, Topic, Channel
+from contents.models import Entry, Topic
 
 
 class HomePageListView(ListView):
@@ -33,7 +35,7 @@ class EntryListView(HomePageListView):
     def get_queryset(self):
         return (
             Topic.objects.get(pk=self.kwargs["topic_pk"])
-            .entry_set.order_by("created_at")
+                .entry_set.order_by("created_at")
         )
 
     def get_context_data(self, **kwargs):
@@ -63,3 +65,19 @@ class NewTopicView(HomePageListView):
             entry.save()
 
             return redirect("topic_entries", topic_pk=topic.pk)
+
+
+def today_in_history(request):
+    url = "http://history.muffinlabs.com/date"
+    f = urllib.request.urlopen(url)
+    str_res = f.read().decode('utf-8')
+    result = json.loads(str_res)
+    k = 3
+    events = random.choices(result["data"]['Events'], k=k)
+    births = random.choices(result["data"]['Births'], k=k)
+    deaths = random.choices(result["data"]['Deaths'], k=k)
+    return JsonResponse({
+        "events": events,
+        "births": births,
+        "deaths": deaths
+    })
