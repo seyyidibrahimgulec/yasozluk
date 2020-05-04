@@ -13,12 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import path
 
 from users.views import SignupView, UserProfileEntryView, UserProfileFavoriteView, UserProfileVoteView
-from contents.views import HomePageListView, EntryListView, NewTopicView 
+from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,4 +32,5 @@ urlpatterns = [
     path("user_profile/entries/", UserProfileEntryView.as_view(), name="user_entries"),
     path("user_profile/votes/", UserProfileVoteView.as_view(), name="user_votes"),
     path("user_profile/favorites/", UserProfileFavoriteView.as_view(), name="user_favorites"),
+    url(r'^ajax/today', today_in_history, name='today'),
 ]
