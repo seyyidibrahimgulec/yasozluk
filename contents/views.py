@@ -72,10 +72,10 @@ def today_in_history(request):
     f = urllib.request.urlopen(url)
     str_res = f.read().decode('utf-8')
     result = json.loads(str_res)
-
-    events = random.choices(result["data"]['Events'], k=5)
-    births = random.choices(result["data"]['Births'], k=5)
-    deaths = random.choices(result["data"]['Deaths'], k=5)
+    k = 3
+    events = random.choices(result["data"]['Events'], k=k)
+    births = random.choices(result["data"]['Births'], k=k)
+    deaths = random.choices(result["data"]['Deaths'], k=k)
     return JsonResponse({
         "events": events,
         "births": births,
