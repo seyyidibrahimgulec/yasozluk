@@ -15,6 +15,7 @@
   </div>
   <script>
      window.messageFilter=function(lastPollTime){
+     let cookie = getCookie("csrftoken");
        $.ajax({
         url: "/ajax/messages/get?lastPoll=" + lastPollTime,
         type: "get",
@@ -23,7 +24,7 @@
           xhr.setRequestHeader("X-CSRFToken", cookie);
         }
       }
-    }).done(function (result) {$("#message-container")
+    }).done(function (result) {
         $("#message-container").append(result);
         scrollToLatest();
     });

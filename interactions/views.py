@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.utils.timezone import make_aware
 from django.views.generic import ListView, CreateView
 
 from interactions.forms import NewMessageForm
@@ -139,6 +140,7 @@ class NewMessageAjax:
 
         if self.request.is_ajax():
             entry = self.object
+            me = self.request.user.id
             return render(self.request, 'includes/message.html', locals())
         else:
             return response
@@ -151,17 +153,19 @@ class MessageCreate(NewMessageAjax, CreateView):
 
 
 def poll_message_count(request):
-    last_poll = datetime.fromisoformat(request.GET.get("lastPoll"))
+    last_poll = make_aware(datetime.fromisoformat(request.GET.get("lastPoll")))
     count = Message.objects.filter(
         Q(send_to__id=request.user.id) & Q(created_at__gte=last_poll)).count()
-    print(count)
+    # print(count)
     return JsonResponse({'count': count})
 
 
 def get_message_poll(request):
-    last_poll = datetime.fromisoformat(request.GET.get("lastPoll"))
+    last_poll = make_aware(datetime.fromisoformat(request.GET.get("lastPoll")))
     data = Message.objects.filter(
         Q(send_to__id=request.user.id) & Q(created_at__gte=last_poll)).order_by("created_at")
 
     current_conversation = data
+    me = request.user.id
+    print(data)
     return render(request, 'includes/conversation.html', locals())

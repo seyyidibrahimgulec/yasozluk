@@ -4,7 +4,7 @@ $(document).ready(function () {
   setInterval(() => {
     console.log("polling new changes");
     pollNewMessages();
-  }, 5000);
+  }, 1000);
   scrollToLatest();
 });
 
@@ -27,13 +27,16 @@ function pollNewMessages() {
     })
     .done(function (result) {
       console.log(result);
+      if (result.count > 0) {
+        if (window.messageFilter) {
+          window.messageFilter(lastPollTime);
+        }else{
+          
+        }
+      }
       let s = new Date(Date.now()).toISOString()
       lastPollTime = s.substring(0, s.length - 1)
       setCookie("last_poll_time", lastPollTime, 7);
-      if (result.count > 0) {
-        if (window.messageFilter)
-          window.messageFilter(lastPollTime);
-      }
     }).fail(function (err) {
       console.log("error", err);
     });
@@ -41,9 +44,15 @@ function pollNewMessages() {
 
 function scrollToLatest() {
   if ($(".message").last()[0])
-    $(".message").last()[0].scrollIntoView({
-      behavior: "smooth"
-    });
+    $(".message").last()[0].
+  scrollIntoView({
+    behavior: "smooth",
+    block: "end",
+    inline: "nearest"
+  });
+  // .scrollIntoView({
+  //   behavior: "smooth"
+  // });
 }
 
 function loadTodayInHistory() {
