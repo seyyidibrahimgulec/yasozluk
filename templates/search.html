@@ -5,7 +5,7 @@
   <h4>The closest results were displayed.<h4>
   {% for topic in topics_search %}
     <div  class="border-top border-bottom pt-3 pb-3 mt-3">
-      <a href="{% url 'topic_entries' topic.pk %}"><h5>{{ topic.subject }}</h5></a>
+      <a href="{% url 'topic_entries' topic.pk %}"><h5>{{ topic.subject }} ({{ topic.get_entry_set }})</h5></a>
     </div>
   {% endfor %}
 {% endblock middle_frame %}
