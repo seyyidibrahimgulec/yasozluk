@@ -322,3 +322,4 @@ env.bak/
 venv.bak/
 .idea/*
 .vscode/settings.json
+.DS_Store
