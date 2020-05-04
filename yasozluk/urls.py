@@ -22,6 +22,8 @@ from django.urls import path
 from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history
 from interactions.views import MessagesView, NewMessageView, MessageCreate, poll_message_count, get_message_poll
 from users.views import SignupView
+from users.views import SignupView, UserProfileEntryView, UserProfileFavoriteView, UserProfileVoteView
+from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -37,5 +39,8 @@ urlpatterns = [
     path("", HomePageListView.as_view(), name="home"),
     path("topic/<int:topic_pk>/", EntryListView.as_view(), name="topic_entries"),
     path("topic/new", NewTopicView.as_view(), name="new_topic"),
+    path("user_profile/entries/", UserProfileEntryView.as_view(), name="user_entries"),
+    path("user_profile/votes/", UserProfileVoteView.as_view(), name="user_votes"),
+    path("user_profile/favorites/", UserProfileFavoriteView.as_view(), name="user_favorites"),
     url(r'^ajax/today', today_in_history, name='today'),
 ]
