@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
 from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history
-from interactions.views import MessagesView, newMessage
+from interactions.views import MessagesView, NewMessageView, MessageCreate
 from users.views import SignupView
 
 urlpatterns = [
@@ -27,19 +28,10 @@ urlpatterns = [
     path("signup/", SignupView.as_view(), name="signup"),
     path("login/", LoginView.as_view(template_name="login.html"), name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),
-    url(
-        regex=r'^messages/(?P<user_id>\d+)/(?P<slug>\d+)/$',
-        view=MessagesView.as_view(),
-        name='messagesRoute'
-    ),
-    # url(
-    #     regex=r'^(?P<user_id>\d+)/(?P<slug>\d+)/$',
-    #     view=MessagesView.as_view(),
-    #     name='messagesRoute'
-    # ),
     path('messages/<int:user_id>/<str:slug>/', MessagesView.as_view(), name="messagesRoute"),
     path('messages/', MessagesView.as_view(), name="allMessages"),
-    path('messages/new/', newMessage, name="newMessage"),
+    path('messages/new/', NewMessageView.as_view(), name="newMessage"),
+    path('ajax/messages/new/', login_required(MessageCreate.as_view()), name="newMessageAjax"),
 
     path("", HomePageListView.as_view(), name="home"),
     path("topic/<int:topic_pk>/", EntryListView.as_view(), name="topic_entries"),

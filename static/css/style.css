@@ -24,6 +24,10 @@
   }
 }
 
+.message>p {
+  margin-bottom: 0 !important;
+}
+
 .sent-by-me {
   border: 1px solid #989898;
   background: #343a40;
@@ -52,5 +56,6 @@
   border-top: 1px solid #cccccc36;
   display: flex;
   align-items: center;
+  border-bottom: 1px solid #dadada;
   width: 100%;
 }
