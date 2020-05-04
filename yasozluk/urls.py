@@ -18,19 +18,29 @@ from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
-from contents.views import EntryListView, HomePageListView, NewTopicView, today_in_history
+from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history
+from interactions.views import MessagesView, newMessage
 from users.views import SignupView
-from contents.views import HomePageListView, EntryListView, NewTopicView
-from interactions.views import messages, newMessage
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("signup/", SignupView.as_view(), name="signup"),
     path("login/", LoginView.as_view(template_name="login.html"), name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),
-    path('messages/<int:user_id>/<str:slug>/', messages, name="messagesRoute"),
-    path('messages/', messages, name="allMessages"),
+    url(
+        regex=r'^messages/(?P<user_id>\d+)/(?P<slug>\d+)/$',
+        view=MessagesView.as_view(),
+        name='messagesRoute'
+    ),
+    # url(
+    #     regex=r'^(?P<user_id>\d+)/(?P<slug>\d+)/$',
+    #     view=MessagesView.as_view(),
+    #     name='messagesRoute'
+    # ),
+    path('messages/<int:user_id>/<str:slug>/', MessagesView.as_view(), name="messagesRoute"),
+    path('messages/', MessagesView.as_view(), name="allMessages"),
     path('messages/new/', newMessage, name="newMessage"),
+
     path("", HomePageListView.as_view(), name="home"),
     path("topic/<int:topic_pk>/", EntryListView.as_view(), name="topic_entries"),
     path("topic/new", NewTopicView.as_view(), name="new_topic"),
