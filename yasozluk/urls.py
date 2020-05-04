@@ -21,9 +21,7 @@ from django.urls import path
 
 from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history
 from interactions.views import MessagesView, NewMessageView, MessageCreate, poll_message_count, get_message_poll
-from users.views import SignupView
 from users.views import SignupView, UserProfileEntryView, UserProfileFavoriteView, UserProfileVoteView
-from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history
 
 urlpatterns = [
     path('admin/', admin.site.urls),
