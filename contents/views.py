@@ -81,3 +81,17 @@ def today_in_history(request):
         "births": births,
         "deaths": deaths
     })
+
+
+class TopicSearchListView(HomePageListView):
+    # TODO: Daha sonra kanallar ve kullanıcıllar içerisinden arama da eklenicek.
+    template_name = 'search.html'
+    context_object_name = "topics_search"
+
+    def get_queryset(self):
+        q = self.request.GET.get('search_q')
+        if q:
+            return (
+                Topic.objects.filter(subject__icontains=q)[0:10]
+            )
+        return Topic.objects.filter()[0:10]
