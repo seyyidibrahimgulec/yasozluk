@@ -13,4 +13,14 @@
     {% include "includes/entry.html" %}
   {% endfor %}
   {% include "includes/pagination.html" %}
+  {% if request.user.is_authenticated %}
+    <div class="form-group">
+      {% csrf_token %}
+      <input type="hidden" id="user-pk" value="{{ request.user.pk }}" />
+      <input type="hidden" id="topic-pk" value="{{ topic.pk }}" />
+      <label for="entry-box">Enter your entry ...</label>
+      <textarea class="form-control" id="entry-box" rows="7"></textarea>
+      <input type="button" class="btn btn-primary btn-block mt-2" value="Post" id="entry-post" />
+    </div>
+  {% endif %}
 {% endblock middle_frame %}
