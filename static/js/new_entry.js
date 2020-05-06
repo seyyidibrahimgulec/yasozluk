@@ -27,7 +27,8 @@ function create_new_entry(){
       topic: $('#topic-pk').val(), 	
     }
   }).done(function(){
-    window.location.replace("/");
+    let currentURL = window.location.pathname + window.location.search + window.location.hash;
+    window.location.replace(currentURL);
   });
 }
 

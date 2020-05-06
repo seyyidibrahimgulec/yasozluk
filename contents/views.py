@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
+from django.db.models import Max
 
 from contents.forms import EntryForm, TopicForm
 from contents.models import Entry, Topic
@@ -18,7 +19,8 @@ class HomePageListView(ListView):
     template_name = "homepage.html"
 
     def get_context_data(self, **kwargs):
-        kwargs["topics"] = Topic.objects.distinct().order_by("-entry__created_at")[:20]
+        kwargs["topics"] = Topic.objects.annotate(entry_create_time=Max("entry__created_at")) \
+                                        .order_by("-entry_create_time")[:20]
         return super().get_context_data(**kwargs)
 
     def get_queryset(self):
