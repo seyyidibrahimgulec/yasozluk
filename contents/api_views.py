@@ -1,8 +1,6 @@
 from rest_framework.generics import CreateAPIView
 
-from django.contrib.auth.models import User
-
-from contents.models import Entry, Topic
+from contents.models import Entry
 from contents.serializers import EntrySerializer
 
 
