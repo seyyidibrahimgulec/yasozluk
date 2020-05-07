@@ -30,8 +30,8 @@ function pollNewMessages() {
       if (result.count > 0) {
         if (window.messageFilter) {
           window.messageFilter(lastPollTime);
-        }else{
-          
+        } else {
+
         }
       }
       let s = new Date(Date.now()).toISOString()

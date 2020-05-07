@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% block title %}
+  Mesajlar
+{% endblock title %}
 {% block left_frame %}
 <div class="border-bottom mb-2 d-flex align-items-center">
   <h5>Kullanıcılar</h5>
@@ -12,24 +15,7 @@
       <div class="row" style="float:left;font-weight: 500;font-size: 13px;">{{item.target}}</div>
       <div class="row" style="float:right;font-style: italic;font-size: 12px;">{{item.date}}</div>
     </div>
-  </div>
-  <script>
-     window.messageFilter=function(lastPollTime){
-     let cookie = getCookie("csrftoken");
-       $.ajax({
-        url: "/ajax/messages/get?lastPoll=" + lastPollTime,
-        type: "get",
-        beforeSend: function (xhr, settings) {
-          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-          xhr.setRequestHeader("X-CSRFToken", cookie);
-        }
-      }
-    }).done(function (result) {
-        $("#message-container").append(result);
-        scrollToLatest();
-    });
-  }
-  </script>
+  </div>  
 {% endfor %}
 {% endblock left_frame %}
 
