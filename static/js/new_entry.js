@@ -27,8 +27,10 @@ function create_new_entry(){
       topic: $('#topic-pk').val(), 	
     }
   }).done(function(){
-    let currentURL = window.location.pathname + window.location.search + window.location.hash;
-    window.location.replace(currentURL);
+    let entry_count = parseInt($('#entry-count').val()) + 1;
+    let page_count = Math.ceil(entry_count / 10);
+    let url = "/topic/" + $('#topic-pk').val() + "/?page=" + page_count;
+    window.location.replace(url);
   });
 }
 

@@ -18,6 +18,7 @@
       {% csrf_token %}
       <input type="hidden" id="user-pk" value="{{ request.user.pk }}" />
       <input type="hidden" id="topic-pk" value="{{ topic.pk }}" />
+      <input type="hidden" id="entry-count" value="{{ topic.get_entry_set }}" />
       <textarea placeholder="give information about &quot;{{ topic.subject }}&quot;" class="form-control" id="entry-box" rows="7"></textarea>
       <input type="button" class="btn btn-primary btn-block mt-2" value="Post" id="entry-post" />
     </div>
