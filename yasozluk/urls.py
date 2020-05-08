@@ -23,6 +23,9 @@ from contents.views import HomePageListView, EntryListView, NewTopicView, today_
 from interactions.views import MessageCreate, MessagesView, NewMessageView, get_message_history, get_message_poll, \
     poll_message_count
 from users.views import SignupView, UserProfileEntryView, UserProfileFavoriteView, UserProfileVoteView
+from users.views import SignupView, UserProfileEntryView, UserProfileFavoriteView, UserProfileVoteView
+from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history, TopicSearchListView
+from contents.api_views import CreateEntryAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,9 +41,15 @@ urlpatterns = [
     path('ajax/messages/history', get_message_history, name="messageHistoryGetAjax"),
     path("", HomePageListView.as_view(), name="home"),
     path("topic/<int:topic_pk>/", EntryListView.as_view(), name="topic_entries"),
-    path("topic/new", NewTopicView.as_view(), name="new_topic"),
+    path("topic/new/", NewTopicView.as_view(), name="new_topic"),
     path("user_profile/entries/", UserProfileEntryView.as_view(), name="user_entries"),
     path("user_profile/votes/", UserProfileVoteView.as_view(), name="user_votes"),
     path("user_profile/favorites/", UserProfileFavoriteView.as_view(), name="user_favorites"),
     url(r'^ajax/today', today_in_history, name='today'),
+    path("topic_search/", TopicSearchListView.as_view(), name="topic_search"),
+]
+
+
+urlpatterns += [
+    path("api/new_entry/", CreateEntryAPIView.as_view(), name="new_entry"),
 ]
