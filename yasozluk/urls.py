@@ -19,13 +19,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
-from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history
+from contents.api_views import CreateEntryAPIView
+from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history, TopicSearchListView
 from interactions.views import MessageCreate, MessagesView, NewMessageView, get_message_history, get_message_poll, \
     poll_message_count
 from users.views import SignupView, UserProfileEntryView, UserProfileFavoriteView, UserProfileVoteView
-from users.views import SignupView, UserProfileEntryView, UserProfileFavoriteView, UserProfileVoteView
-from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history, TopicSearchListView
-from contents.api_views import CreateEntryAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
