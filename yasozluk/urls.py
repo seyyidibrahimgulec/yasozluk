@@ -19,7 +19,8 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
 from users.views import SignupView, UserProfileEntryView, UserProfileFavoriteView, UserProfileVoteView
-from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history
+from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history, TopicSearchListView
+from contents.api_views import CreateEntryAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,9 +29,15 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(), name="logout"),
     path("", HomePageListView.as_view(), name="home"),
     path("topic/<int:topic_pk>/", EntryListView.as_view(), name="topic_entries"),
-    path("topic/new", NewTopicView.as_view(), name="new_topic"),
+    path("topic/new/", NewTopicView.as_view(), name="new_topic"),
     path("user_profile/entries/", UserProfileEntryView.as_view(), name="user_entries"),
     path("user_profile/votes/", UserProfileVoteView.as_view(), name="user_votes"),
     path("user_profile/favorites/", UserProfileFavoriteView.as_view(), name="user_favorites"),
     url(r'^ajax/today', today_in_history, name='today'),
+    path("topic_search/", TopicSearchListView.as_view(), name="topic_search"),
+]
+
+
+urlpatterns += [
+    path("api/new_entry/", CreateEntryAPIView.as_view(), name="new_entry"),
 ]

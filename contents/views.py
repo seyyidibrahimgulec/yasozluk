@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
+from django.db.models import Max
 
 from contents.forms import EntryForm, TopicForm
 from contents.models import Entry, Topic
@@ -18,7 +19,8 @@ class HomePageListView(ListView):
     template_name = "homepage.html"
 
     def get_context_data(self, **kwargs):
-        kwargs["topics"] = Topic.objects.order_by("-entry__created_at")[:20]
+        kwargs["topics"] = Topic.objects.annotate(entry_create_time=Max("entry__created_at")) \
+                                        .order_by("-entry_create_time")[:20]
         return super().get_context_data(**kwargs)
 
     def get_queryset(self):
@@ -81,3 +83,17 @@ def today_in_history(request):
         "births": births,
         "deaths": deaths
     })
+
+
+class TopicSearchListView(HomePageListView):
+    # TODO: Daha sonra kanallar ve kullanıcıllar içerisinden arama da eklenicek.
+    template_name = 'search.html'
+    context_object_name = "topics_search"
+
+    def get_queryset(self):
+        q = self.request.GET.get('search_q')
+        if q:
+            return (
+                Topic.objects.filter(subject__icontains=q)[0:10]
+            )
+        return Topic.objects.filter()[0:10]

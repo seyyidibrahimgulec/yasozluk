@@ -17,6 +17,10 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse">
+	    <form class="form-inline ml-auto" action="{% url 'topic_search' %}" method="get">
+	      <input style="width: 400px;" class="form-control mr-sm-2" name="search_q" type="search" placeholder="Search" aria-label="Search">
+	      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+	    </form>
             {% if user.is_authenticated %}
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
@@ -59,5 +63,7 @@
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/app.js' %}"></script>
+    {% block extra_js %}
+    {% endblock %}
   </body>
 </html>

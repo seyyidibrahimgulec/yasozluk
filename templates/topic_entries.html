@@ -1,5 +1,5 @@
 {% extends 'homepage.html' %}
-
+{% load static %}
 
 {% block middle_frame %}
   <div class="mb-5">
@@ -13,4 +13,18 @@
     {% include "includes/entry.html" %}
   {% endfor %}
   {% include "includes/pagination.html" %}
+  {% if request.user.is_authenticated %}
+    <div class="form-group bg-secondary pl-3 pr-3 pt-3 pb-4">
+      {% csrf_token %}
+      <input type="hidden" id="user-pk" value="{{ request.user.pk }}" />
+      <input type="hidden" id="topic-pk" value="{{ topic.pk }}" />
+      <input type="hidden" id="entry-count" value="{{ topic.get_entry_set }}" />
+      <textarea placeholder="give information about &quot;{{ topic.subject }}&quot;" class="form-control" id="entry-box" rows="7"></textarea>
+      <input type="button" class="btn btn-primary btn-block mt-2" value="Post" id="entry-post" />
+    </div>
+  {% endif %}
 {% endblock middle_frame %}
+    
+{% block extra_js %}
+    <script src="{% static 'js/new_entry.js' %}"></script>
+{% endblock extra_js %}
