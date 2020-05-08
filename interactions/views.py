@@ -15,62 +15,67 @@ from interactions.forms import NewMessageForm
 from interactions.models import Message
 
 
+def message_item_sort_key(val):
+    return val["date"]
+
+
+def get_user_messages(user_id):
+    incoming = Message.objects.filter(
+        send_to__id=user_id).values('send_by__id').distinct()
+    outbox = Message.objects.filter(
+        send_by__id=user_id).values('send_to__id').distinct()
+    paged_messages = []
+    for item in incoming:
+        print(item['send_by__id'])
+        last_message = Message.objects. \
+            filter((Q(send_by_id=user_id) & Q(send_to_id=item['send_by__id'])) |
+                   (Q(send_to_id=user_id) & Q(send_by_id=item['send_by__id']))). \
+            order_by("-created_at").first()
+        if not last_message:
+            continue
+
+        sender = last_message.send_by
+        if sender.id == user_id:
+            sender = last_message.send_to
+
+        paged_messages.append({
+            'user_id': sender.id,
+            'target': sender.username,
+            'text': last_message.text[:25],
+            'date': last_message.created_at
+        })
+    for item in outbox:
+        print(item['send_to__id'])
+        last_message = Message.objects. \
+            filter((Q(send_by_id=user_id) & Q(send_to_id=item['send_to__id'])) |
+                   (Q(send_to_id=user_id) & Q(send_by_id=item['send_to__id']))). \
+            order_by("-created_at").first()
+        if not last_message:
+            continue
+        sender = last_message.send_by
+        if sender.id == user_id:
+            sender = last_message.send_to
+
+        message_item = {
+            'user_id': sender.id,
+            'target': sender.username,
+            'text': last_message.text[:25],
+            'date': last_message.created_at
+        }
+        if message_item in paged_messages:
+            print("already added")
+            continue
+
+        paged_messages.append(message_item)
+
+    paged_messages.sort(key=message_item_sort_key, reverse=True)
+    return paged_messages
+
+
 @method_decorator(login_required, name="dispatch")
 class MessagesView(ListView):
     context_object_name = "messages"
     template_name = "userMessages.html"
-
-    def get_user_messages(self):
-        incoming = Message.objects.filter(
-            send_to__id=self.request.user.id).values('send_by__id').distinct()
-        outbox = Message.objects.filter(
-            send_by__id=self.request.user.id).values('send_to__id').distinct()
-        paged_messages = []
-        for item in incoming:
-            print(item['send_by__id'])
-            last_message = Message.objects. \
-                filter((Q(send_by_id=self.request.user.id) & Q(send_to_id=item['send_by__id'])) |
-                       (Q(send_to_id=self.request.user.id) & Q(send_by_id=item['send_by__id']))). \
-                order_by("-created_at").first()
-            if not last_message:
-                continue
-
-            sender = last_message.send_by
-            if sender.id == self.request.user.id:
-                sender = last_message.send_to
-
-            paged_messages.append({
-                'user_id': sender.id,
-                'target': sender.username,
-                'text': last_message.text[:25],
-                'date': last_message.created_at
-            })
-        for item in outbox:
-            print(item['send_to__id'])
-            last_message = Message.objects. \
-                filter((Q(send_by_id=self.request.user.id) & Q(send_to_id=item['send_to__id'])) |
-                       (Q(send_to_id=self.request.user.id) & Q(send_by_id=item['send_to__id']))). \
-                order_by("-created_at").first()
-            if not last_message:
-                continue
-            sender = last_message.send_by
-            if sender.id == self.request.user.id:
-                sender = last_message.send_to
-
-            message_item = {
-                'user_id': sender.id,
-                'target': sender.username,
-                'text': last_message.text[:25],
-                'date': last_message.created_at
-            }
-            if message_item in paged_messages:
-                print("already added")
-                continue
-
-            paged_messages.append(message_item)
-
-        paged_messages.sort(key=message_item_sort_key, reverse=True)
-        return paged_messages
 
     def get_context_data(self, *, object_list=None, **kwargs):
         user_id = -1
@@ -93,11 +98,7 @@ class MessagesView(ListView):
     def get_queryset(self):
         if self.queryset is not None or self.model is not None:
             return super().get_queryset()
-        return self.get_user_messages()
-
-
-def message_item_sort_key(val):
-    return val['date']
+        return get_user_messages(self.request.user.id)
 
 
 @method_decorator(login_required, name="dispatch")
@@ -169,3 +170,8 @@ def get_message_poll(request):
     me = request.user.id
     print(data)
     return render(request, 'includes/conversation.html', locals())
+
+
+def get_message_history(request):
+    messages = get_user_messages(request.user.id)
+    return render(request, 'includes/conversation_list.html', locals())

@@ -20,7 +20,8 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
 from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history
-from interactions.views import MessagesView, NewMessageView, MessageCreate, poll_message_count, get_message_poll
+from interactions.views import MessageCreate, MessagesView, NewMessageView, get_message_history, get_message_poll, \
+    poll_message_count
 from users.views import SignupView, UserProfileEntryView, UserProfileFavoriteView, UserProfileVoteView
 
 urlpatterns = [
@@ -34,6 +35,7 @@ urlpatterns = [
     path('ajax/messages/new/', login_required(MessageCreate.as_view()), name="newMessageAjax"),
     path('ajax/messages/count', poll_message_count, name="messageCountAjax"),
     path('ajax/messages/get', get_message_poll, name="messageGetAjax"),
+    path('ajax/messages/history', get_message_history, name="messageHistoryGetAjax"),
     path("", HomePageListView.as_view(), name="home"),
     path("topic/<int:topic_pk>/", EntryListView.as_view(), name="topic_entries"),
     path("topic/new", NewTopicView.as_view(), name="new_topic"),

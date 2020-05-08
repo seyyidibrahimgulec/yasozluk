@@ -1,9 +1,9 @@
-from django.db import models
 from django.contrib.auth.models import User
-
-from interactions.enums import VoteType
-from contents.models import Entry
+from django.db import models
 from enumfields import EnumField
+
+from contents.models import Entry
+from interactions.enums import VoteType
 
 
 class Vote(models.Model):

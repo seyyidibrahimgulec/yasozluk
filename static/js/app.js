@@ -4,9 +4,31 @@ $(document).ready(function () {
   setInterval(() => {
     console.log("polling new changes");
     pollNewMessages();
-  }, 1000);
+  }, 2000);
   scrollToLatest();
+  loadUserMessageHistory();
 });
+
+function loadUserMessageHistory() {
+  $.ajax({
+      url: "/ajax/messages/history",
+      type: "get",
+      beforeSend: function (xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", cookie);
+        }
+      }
+    })
+    .done(function (result) {
+      console.log(result);
+      $("#messageHistoryContainer").html(result);
+      if (window.historyFilter) {
+        window.historyFilter(result);
+      }
+    }).fail(function (err) {
+      console.log("error", err);
+    });
+}
 
 function pollNewMessages() {
   let lastPollTime = getCookie("last_poll_time");
@@ -31,8 +53,9 @@ function pollNewMessages() {
         if (window.messageFilter) {
           window.messageFilter(lastPollTime);
         } else {
-
+          notifyUser("Yeni Mesaj", "");
         }
+        loadUserMessageHistory();
       }
       let s = new Date(Date.now()).toISOString()
       lastPollTime = s.substring(0, s.length - 1)
@@ -60,18 +83,18 @@ function loadTodayInHistory() {
     .done(function (result) {
       //    console.log( "success",data ); 
       console.log(result);
-      var size = 5;
-      var items = result.events.slice(0, size).map(i => {
+      var items = result.events.map(i => {
         return `<div class="todayRow">${i.no_year_html}</div>`
       });
       let rightFrame = $("#right_frame");
       rightFrame.empty();
+      rightFrame.append($(`<h5 style="padding-top:10px">Geçmişte Bugün..</h5>`));
       appendItemsToRight(rightFrame, items, "Olaylar");
-      items = result.births.slice(0, size).map(i => {
+      items = result.births.map(i => {
         return `<div class="todayRow">${i.no_year_html}</div>`
       });
       appendItemsToRight(rightFrame, items, "Doğumlar");
-      items = result.deaths.slice(0, size).map(i => {
+      items = result.deaths.map(i => {
         return `<div class="todayRow">${i.no_year_html}</div>`
       });
       appendItemsToRight(rightFrame, items, "Ölümler");
@@ -115,6 +138,7 @@ function sendMessage() {
       $("#txtMessage").val("");
       $("#message-container").append(result);
       scrollToLatest();
+      loadUserMessageHistory();
     }).fail(function (err) {
       console.log("error", err);
 
@@ -165,4 +189,20 @@ function getCookie(name) {
 function csrfSafeMethod(method) {
   // these HTTP methods do not require CSRF protection
   return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+function notifyUser(_title, _note, _userData) {
+  macOSNotif({
+    title: _title,
+    subtitle: _note,
+    delay: 0,
+    autoDismiss: 5,
+    interactDismiss: true,
+    sounds: true,
+    dark: true,
+    btn1Text: "Kapat", 
+    btn1Dismiss: true, 
+    userData: _userData, 
+    zIndex: 1000000,
+  });
 }
