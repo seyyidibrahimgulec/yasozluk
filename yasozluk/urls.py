@@ -15,18 +15,28 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
-from users.views import SignupView, UserProfileEntryView, UserProfileFavoriteView, UserProfileVoteView
-from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history, TopicSearchListView
 from contents.api_views import CreateEntryAPIView
+from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history, TopicSearchListView
+from interactions.views import MessageCreate, MessagesView, NewMessageView, get_message_history, get_message_poll, \
+    poll_message_count
+from users.views import SignupView, UserProfileEntryView, UserProfileFavoriteView, UserProfileVoteView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("signup/", SignupView.as_view(), name="signup"),
     path("login/", LoginView.as_view(template_name="login.html"), name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),
+    path('messages/<int:user_id>/<str:slug>/', MessagesView.as_view(), name="messagesRoute"),
+    path('messages/', MessagesView.as_view(), name="allMessages"),
+    path('messages/new/', NewMessageView.as_view(), name="newMessage"),
+    path('ajax/messages/new/', login_required(MessageCreate.as_view()), name="newMessageAjax"),
+    path('ajax/messages/count', poll_message_count, name="messageCountAjax"),
+    path('ajax/messages/get', get_message_poll, name="messageGetAjax"),
+    path('ajax/messages/history', get_message_history, name="messageHistoryGetAjax"),
     path("", HomePageListView.as_view(), name="home"),
     path("topic/<int:topic_pk>/", EntryListView.as_view(), name="topic_entries"),
     path("topic/new/", NewTopicView.as_view(), name="new_topic"),

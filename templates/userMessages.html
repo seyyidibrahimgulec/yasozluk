@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+  Mesajlar
+{% endblock title %}
+{% block left_frame %}
+  <div class="border-bottom mb-2 d-flex align-items-center">
+    <h5>Mesajlar</h5>
+    <a class="btn btn-outline-primary mb-2 ml-auto" href="{% url 'newMessage'%}"><h6 class="m-0">Yeni Mesaj</h6></a>
+  </div>
+  <div style="max-height: 66vh; overflow-y: auto;" id="conversation_list">
+    {%include "includes/conversation_list.html"%}
+  </div>
+{% endblock left_frame %}
+
+{% block middle_frame %}
+  <div class="col-12" style="padding: 0!important;">
+    {% if conversationWith %}
+    <div class="col-12 conversation-with-header"><span>{{conversationWith.username}} ile çene çalmalar</span>
+    </div>
+    {% endif %}
+    <div style="height: 60vh;overflow-y: auto;">
+      <div id="message-container" style="clear:both;margin-top: 30px;">
+        {% include "includes/conversation.html" %}
+      </div>
+    </div>
+    {% if conversationWith %}
+    <div
+      style="height: 18vh;text-align: end;border-top: 1px solid #0000004f;position: fixed;bottom: 3px;background: #343a40;"
+      class="pt-1 col-md-5">
+      <div class="row">
+        <div class="col-md-12">
+          <textarea class="form-control" placeholder="Type your message.." id="txtMessage"></textarea>
+        </div>
+        <input type="hidden" id="send_to_id" value="{{conversationWith.pk}}" />
+        <div class="col-md-12" style="text-align: end;">
+          <button id="btnSendMessage" onclick="sendMessage()" class="form-control">Send</button>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <script>
+
+  </script>
+{% endblock middle_frame %}
+{% block extra_js %}
+    <script src="{% static 'js/user.js' %}"></script>
+    <script src="{% static 'js/user_messages.js' %}"></script>
+{% endblock extra_js %}

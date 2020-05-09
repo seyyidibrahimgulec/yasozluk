@@ -1,0 +1,19 @@
+{% extends 'userMessages.html' %}
+
+{% block middle_frame %}
+    <div class="p-1 border-right border-left">
+      <div class="row">
+        <div class="col-12">
+          <h1>New Message</h1>
+        </div>
+      </div>
+      <form method="post">
+        <form method="post">
+          {% csrf_token %}
+          {% include 'includes/form.html' %}
+          <button type="submit" class="btn btn-success">Post</button>
+        </form>
+      </form>
+    </div>
+
+{% endblock middle_frame %}
