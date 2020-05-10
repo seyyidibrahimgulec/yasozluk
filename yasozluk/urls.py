@@ -24,6 +24,7 @@ from contents.views import HomePageListView, EntryListView, NewTopicView, today_
 from interactions.views import MessageCreate, MessagesView, NewMessageView, get_message_history, get_message_poll, \
     poll_message_count
 from users.views import SignupView, UserProfileEntryView, UserProfileFavoriteView, UserProfileVoteView
+from interactions.api_views import CreateFavoriteAPIView, CreateVoteAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -50,4 +51,6 @@ urlpatterns = [
 
 urlpatterns += [
     path("api/new_entry/", CreateEntryAPIView.as_view(), name="new_entry"),
+    path("api/new_vote/", CreateVoteAPIView.as_view(), name="new_vote"),
+    path("api/new_favorite/", CreateFavoriteAPIView.as_view(), name="new_favorite"),
 ]
