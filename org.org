@@ -1,18 +1,9 @@
-* Templateler
-- [X] Base HTML (navbar, login, search)
-
-* Views
-- [X] Anasayfa (sol-frame, random en beğenilen entryler)
-- [X] Başlıktaki entrileri listeleme
-- [X] Login
-- [X] Signup
-- [X] Yeni topic
-- [X] Hesabım
-- [X] Favorilerim
-- [X] Beğendiklerim
-- [X] Arama sonuçları
-- [ ] Mesajlaşma
-
-* Service fikirleri
-- [ ] Haber
-- [ ] kanalla ilgili resim
+* TODOs
+- [ ] Yazar isimlerini link yapma
+- [ ] Upvote downvote yazılarını sil
+- [X] Fav ve votedleri ters sırala
+- [ ] Searchdaki borderlar
+- [ ] Olayları heryerde göster
+- [ ] My accounttaki başlıkları link yap
+- [ ] Channeları link yap listele
+- [X] Mesajlara padding koy

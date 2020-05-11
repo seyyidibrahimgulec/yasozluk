@@ -1,0 +1,12 @@
+{% extends 'homepage.html' %}
+
+{% block middle_frame %}
+  <div class="mb-5">
+    <h2>#{{ channel }}</h2>
+  </div>
+
+  {% for topic in channel_topics %}
+    <p>{{ topic.subject}}</p>
+  {% endfor %}
+  {% include "includes/pagination.html" %}
+{% endblock middle_frame %}
