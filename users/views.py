@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from users.forms import SignupForm
-from contents.models import Entry 
+from contents.models import Entry
 from contents.views import HomePageListView
 from interactions.models import Vote, Favorite
 
@@ -20,7 +20,7 @@ class SignupView(CreateView):
         login(self.request, self.object)
         return valid
 
-        
+
 class UserProfileEntryView(HomePageListView):
     template_name = 'user_profile.html'
     paginate_by = 5
@@ -28,8 +28,12 @@ class UserProfileEntryView(HomePageListView):
 
     def get_queryset(self):
         return (
-            Entry.objects.filter(created_by=self.request.user).order_by("-created_at")
+            Entry.objects.filter(created_by=User.objects.get(pk=self.kwargs["user_pk"])).order_by("-created_at")
         )
+
+    def get_context_data(self, **kwargs):
+        kwargs["review_user"] = User.objects.get(pk=self.kwargs["user_pk"])
+        return super().get_context_data(**kwargs)
 
 
 class UserProfileVoteView(HomePageListView):
@@ -39,8 +43,12 @@ class UserProfileVoteView(HomePageListView):
 
     def get_queryset(self):
         return (
-            Vote.objects.filter(user=self.request.user).order_by("-created_at")
+            Vote.objects.filter(user=User.objects.get(pk=self.kwargs["user_pk"])).order_by("-created_at")
         )
+
+    def get_context_data(self, **kwargs):
+        kwargs["review_user"] = User.objects.get(pk=self.kwargs["user_pk"])
+        return super().get_context_data(**kwargs)
 
 
 class UserProfileFavoriteView(HomePageListView):
@@ -50,5 +58,9 @@ class UserProfileFavoriteView(HomePageListView):
 
     def get_queryset(self):
         return (
-            Favorite.objects.filter(user=self.request.user).order_by("-created_at")
+            Favorite.objects.filter(user=User.objects.get(pk=self.kwargs["user_pk"])).order_by("-created_at")
         )
+
+    def get_context_data(self, **kwargs):
+        kwargs["review_user"] = User.objects.get(pk=self.kwargs["user_pk"])
+        return super().get_context_data(**kwargs)

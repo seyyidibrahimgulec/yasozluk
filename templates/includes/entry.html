@@ -17,10 +17,11 @@
 
     <a href="#""><i class="fa fa-chevron-down  {% if vote.vote.value == "downvote" %} text-danger {% endif %}" style="font-size:18px"></i></a> {{ entry.downvote_count }}
 
-    <a href="#""><i class="fa fa-tint {% if favorite %} text-success {% endif %}" style="font-size:14px"></i></a> {{entry.favorite_count }} by:{{ entry.created_by }}
+    <a href="#""><i class="fa fa-tint {% if favorite %} text-success {% endif %}" style="font-size:14px"></i></a> {{entry.favorite_count }}
 
+    <a href="{% url "user_entries" entry.created_by.pk %}">{{ entry.created_by }}</a>
 
-    at:{{entry.created_at|date:"d.m.Y H:i" }}
+    {{entry.created_at|date:"d.m.Y H:i" }}
   </p>
 </div>
 
