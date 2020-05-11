@@ -26,5 +26,6 @@
 {% endblock middle_frame %}
 
 {% block extra_js %}
+  {{ block.super }}
   <script src="{% static 'js/new_entry.js' %}"></script>
 {% endblock extra_js %}

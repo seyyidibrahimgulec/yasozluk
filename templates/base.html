@@ -13,6 +13,8 @@
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/notifier/macOSNotif.min.js' %}"></script>
     <script src="{% static 'js/app.js' %}"></script>
+    {% block extra_js %}
+    {% endblock extra_js%}
   </head>
   <body>
     {% block body %}
@@ -78,7 +80,5 @@
         {% endblock whole_frame %}
       </div>
     {% endblock body %}
-    {% block extra_js %}
-    {% endblock extra_js%}
   </body>
 </html>
