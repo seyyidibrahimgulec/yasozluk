@@ -1,0 +1,71 @@
+#+begin_src plantuml :file class_diagram.png
+  class User {
+      (V) create_entry()
+      (V) edit_entry()
+      (V) block_user()
+      (V) send_message()
+      (V) upvote()
+      (V) downvote()
+      (V) favorite()
+  }
+
+  class Author {
+      user : OneToOneField
+  }
+
+  class Topic {
+      subject = CharField
+      starter = User
+      channel = CharChoice
+      (M) get_entries()
+      (M) get_entries_order_by_upvote()
+  }
+
+  class Entry {
+      text : TextField
+      topic : Topic
+      created_by : User
+      created_at : DateTimeField
+      updated_at : DateTimeField
+      (M) get_upvotes()
+      (M) get_downvotes()
+      (M) get_favorites()
+
+  }
+
+  class Message {
+      text : TextField
+      created_by : Yazar
+      created_at : DateTimeField
+      updated_at : DateTimeField
+  }
+
+  class Vote {
+      vote : BooleanField
+      user : User
+      entry : Entry
+  }
+
+  class Favorite {
+      user : User
+      entry : Entry
+  }
+
+  class Block {
+      blocked_by : User
+      blocked_user : User
+  }
+
+  User "1" -- "1" Author
+  User "1" -- "0..*" Entry
+  Topic "1" -- "0..*" Entry
+  Vote "1" -- "1" User
+  Vote "1" -- "1" Entry
+  Favorite "1" -- "1" User
+  Favorite "1" -- "1" Entry
+  Message "0..*" -- "1" User
+  Block "1" -- "2" User
+#+end_src
+
+#+RESULTS:
+[[file:class_diagram.png]]
