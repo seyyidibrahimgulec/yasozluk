@@ -11,7 +11,7 @@ from django.views.generic import ListView
 from django.db.models import Max
 
 from contents.forms import EntryForm, TopicForm
-from contents.models import Entry, Topic
+from contents.models import Entry, Topic, Channel
 
 
 class HomePageListView(ListView):
@@ -19,8 +19,9 @@ class HomePageListView(ListView):
     template_name = "homepage.html"
 
     def get_context_data(self, **kwargs):
-        kwargs["topics"] = Topic.objects.annotate(entry_create_time=Max("entry__created_at")) \
-                                        .order_by("-entry_create_time")[:20]
+        kwargs["topics"] = Topic.objects.annotate(
+            entry_create_time=Max("entry__created_at")
+        ).order_by("-entry_create_time")[:20]
         return super().get_context_data(**kwargs)
 
     def get_queryset(self):
@@ -35,9 +36,8 @@ class EntryListView(HomePageListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return (
-            Topic.objects.get(pk=self.kwargs["topic_pk"])
-                .entry_set.order_by("created_at")
+        return Topic.objects.get(pk=self.kwargs["topic_pk"]).entry_set.order_by(
+            "created_at"
         )
 
     def get_context_data(self, **kwargs):
@@ -72,28 +72,37 @@ class NewTopicView(HomePageListView):
 def today_in_history(request):
     url = "http://history.muffinlabs.com/date"
     f = urllib.request.urlopen(url)
-    str_res = f.read().decode('utf-8')
+    str_res = f.read().decode("utf-8")
     result = json.loads(str_res)
     k = 5
-    events = random.choices(result["data"]['Events'], k=k)
-    births = random.choices(result["data"]['Births'], k=k)
-    deaths = random.choices(result["data"]['Deaths'], k=k)
-    return JsonResponse({
-        "events": events,
-        "births": births,
-        "deaths": deaths
-    })
+    events = random.choices(result["data"]["Events"], k=k)
+    births = random.choices(result["data"]["Births"], k=k)
+    deaths = random.choices(result["data"]["Deaths"], k=k)
+    return JsonResponse({"events": events, "births": births, "deaths": deaths})
 
 
 class TopicSearchListView(HomePageListView):
     # TODO: Daha sonra kanallar ve kullanıcıllar içerisinden arama da eklenicek.
-    template_name = 'search.html'
+    template_name = "search.html"
     context_object_name = "topics_search"
 
     def get_queryset(self):
-        q = self.request.GET.get('search_q')
+        q = self.request.GET.get("search_q")
         if q:
-            return (
-                Topic.objects.filter(subject__icontains=q)[0:10]
-            )
+            return Topic.objects.filter(subject__icontains=q)[0:10]
         return Topic.objects.filter()[0:10]
+
+
+class ChannelTopicsListView(HomePageListView):
+    context_object_name = "channel_topics"
+    template_name = "channel_topics.html"
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Channel.objects.get(pk=self.kwargs["channel_pk"]).topic_set.annotate(
+            entry_create_time=Max("entry__created_at")
+        ).order_by("-entry_create_time")
+
+    def get_context_data(self, **kwargs):
+        kwargs["channel"] = Channel.objects.get(pk=self.kwargs["channel_pk"])
+        return super().get_context_data(**kwargs)

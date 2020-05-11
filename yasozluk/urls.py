@@ -20,7 +20,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
 from contents.api_views import CreateEntryAPIView
-from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history, TopicSearchListView
+from contents.views import HomePageListView, EntryListView, NewTopicView, today_in_history, TopicSearchListView, ChannelTopicsListView
 from interactions.views import MessageCreate, MessagesView, NewMessageView, get_message_history, get_message_poll, \
     poll_message_count
 from users.views import SignupView, UserProfileEntryView, UserProfileFavoriteView, UserProfileVoteView
@@ -46,6 +46,7 @@ urlpatterns = [
     path("user_profile/favorites/", UserProfileFavoriteView.as_view(), name="user_favorites"),
     url(r'^ajax/today', today_in_history, name='today'),
     path("topic_search/", TopicSearchListView.as_view(), name="topic_search"),
+    path("channel/<int:channel_pk>/", ChannelTopicsListView.as_view(), name="channel_topics"),
 ]
 
 

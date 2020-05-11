@@ -5,7 +5,7 @@
   <div class="mb-5">
     <h2>{{ topic.subject }}</h2>
     {% for channel in topic.channels.all %}
-      <small class="text-muted font-italic">#{{ channel }}</small>
+      <a href="{% url "channel_topics" channel.pk %}"><small class="text-muted font-italic">#{{ channel }}</small></a>
     {% endfor %}
   </div>
 
@@ -24,7 +24,7 @@
     </div>
   {% endif %}
 {% endblock middle_frame %}
-    
+
 {% block extra_js %}
-    <script src="{% static 'js/new_entry.js' %}"></script>
+  <script src="{% static 'js/new_entry.js' %}"></script>
 {% endblock extra_js %}
