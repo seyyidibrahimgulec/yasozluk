@@ -39,7 +39,7 @@ class UserProfileVoteView(HomePageListView):
 
     def get_queryset(self):
         return (
-            Vote.objects.filter(user=self.request.user).order_by("-entry__created_at")
+            Vote.objects.filter(user=self.request.user).order_by("-created_at")
         )
 
 
@@ -50,5 +50,5 @@ class UserProfileFavoriteView(HomePageListView):
 
     def get_queryset(self):
         return (
-            Favorite.objects.filter(user=self.request.user).order_by("-entry__created_at")
+            Favorite.objects.filter(user=self.request.user).order_by("-created_at")
         )

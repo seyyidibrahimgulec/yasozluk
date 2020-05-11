@@ -10,6 +10,7 @@ class Vote(models.Model):
     vote = EnumField(enum=VoteType, null=True)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     entry = models.ForeignKey(to=Entry, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.vote)
@@ -23,6 +24,7 @@ class Block(models.Model):
 class Favorite(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     entry = models.ForeignKey(to=Entry, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Message(models.Model):
