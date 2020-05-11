@@ -1,12 +1,15 @@
 {% extends 'homepage.html' %}
 
+
 {% block middle_frame %}
   <div class="mb-5">
     <h2>#{{ channel }}</h2>
   </div>
 
   {% for topic in channel_topics %}
-    <p>{{ topic.subject}}</p>
+    <div class="border-bottom pt-3 pb-3">
+      <a href="{% url 'topic_entries' topic.pk %}"><h5>{{ topic.subject }} ({{ topic.get_entry_set }})</h5></a>
+    </div>
   {% endfor %}
   {% include "includes/pagination.html" %}
 {% endblock middle_frame %}
