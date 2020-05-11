@@ -14,58 +14,6 @@ function getCookie(name) {
     return cookieValue;
 }
 
-// function create_new_favorite(){
-//   $.ajax({
-//     type: "POST",
-//     url: "/api/new_favorite/",
-//     data: {
-//       csrfmiddlewaretoken: csrftoken,
-//       user: $("#user-pk").val(),
-//       entry: $('#entry-pk').val(),
-//     }
-//   }).done(function(){
-//       let currentURL = window.location.pathname + window.location.search + window.location.hash;
-//       window.location.replace(currentURL);
-//   })
-// }
-
-
-// // function create_new_upvote(){
-// //     console.log($(this).attr('class'))
-// //   // $.ajax({
-// //   //   type: "POST",
-// //   //   url: "/api/new_vote/",
-// //   //   data: {
-// //   //     csrfmiddlewaretoken: csrftoken,
-// //   //     vote: "upvote",
-// //   //     user: $("#user-pk").val(),
-// //   //     entry: $('#entry-pk').val(),
-// //   //   }
-// //   // }).done(function(){
-// //   //     let currentURL = window.location.pathname + window.location.search + window.location.hash;
-// //   //     window.location.replace(currentURL);
-// //   // })
-
-// // }
-
-
-// function create_new_downvote(){
-//   $.ajax({
-//     type: "POST",
-//     url: "/api/new_vote/",
-//     data: {
-//       csrfmiddlewaretoken: csrftoken,
-//       vote: "downvote",
-//       user: $("#user-pk").val(),
-//       entry: $('#entry-pk').val(),
-//     }
-//   }).done(function(){
-//       let currentURL = window.location.pathname + window.location.search + window.location.hash;
-//       window.location.replace(currentURL);
-//   })
-// }
-
-
 $(document).ready(function() {
     var csrftoken = getCookie('csrftoken');
 
