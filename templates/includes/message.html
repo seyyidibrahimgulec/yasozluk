@@ -1,15 +1,15 @@
 {% if entry.send_by.id == me %}
-<div id="msg-{{ entry.pk }}" class="mb-1 pt-1 pl-1 pr-2 pb-1 message sent-by-me">
+  <div id="msg-{{ entry.pk }}" class="mb-1 pl-3 pt-3 p-1 message sent-by-me">
     <p style="font-size: 14px;">{{ entry.text }}</p>
     <p class="small text-right" style="font-style:italic;font-size: 11px;">
-        @:{{entry.created_at|date:"d.m.Y H:i" }}
+      @:{{entry.created_at|date:"d.m.Y H:i" }}
     </p>
-</div>
+  </div>
 {% else %}
-<div id="msg-{{ entry.pk }}" class="mb-1 pt-1 pl-1 pr-2 pb-1 message sent-to-me">
+  <div id="msg-{{ entry.pk }}" class="mb-1 pl-3 pt-3 p-1 message sent-to-me">
     <p style="font-size: 14px;">{{ entry.text }}</p>
     <p class="small text-right" style="font-style:italic;font-size: 11px;">
-        at {{entry.created_at|date:"d.m.Y H:i" }}
+      at {{entry.created_at|date:"d.m.Y H:i" }}
     </p>
-</div>
+  </div>
 {% endif %}
