@@ -25,7 +25,7 @@
     {% if entries %}
       <h4 class="mb-3 pt-4 pb-4 border-bottom border-top text-center">Entries</h4>
       {% for entry in entries %}
-        <h5>{{ entry.topic.subject }}</h4>
+        <a href="{% url 'topic_entries' entry.topic.pk %}"><h5>{{ entry.topic.subject }}</h4></a>
         {% include "includes/entry.html" %}
       {% endfor %}
     {% endif %}
@@ -33,7 +33,7 @@
       <h4 class="mb-3 pt-4 pb-4 border-bottom border-top text-center">Votes</h4>
       {% for vote in votes %}
         {% with entry=vote.entry %}
-          <h5>{{ entry.topic.subject }} -- {{ vote.vote }}</h4>
+          <a href="{% url 'topic_entries' entry.topic.pk %}"><h5>{{ entry.topic.subject }}</h5></a>
           {% include "includes/entry.html" %}
         {% endwith %}
       {% endfor %}
@@ -42,7 +42,7 @@
       <h4 class="mb-3 pt-4 pb-4 border-bottom border-top text-center">Favorites</h4>
       {% for favorite in favorites %}
         {% with entry=favorite.entry %}
-          <h5>{{ entry.topic.subject }}</h4>
+          <a href="{% url 'topic_entries' entry.topic.pk %}"><h5>{{ entry.topic.subject }}</h5></a>
           {% include "includes/entry.html" %}
         {% endwith %}
       {% endfor %}
