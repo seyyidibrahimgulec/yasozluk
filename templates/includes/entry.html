@@ -1,8 +1,29 @@
+{% load interaction_tags %}
+
+{% load static %}
 <div class="mb-5 border-bottom">
   <p>{{ entry.text }}</p>
   <p class="small text-right">
-    up:{{ entry.upvote_count }} down:{{ entry.downvote_count }}
-    favorites:{{entry.favorite_count }} by:{{ entry.created_by }}
+    <input type="hidden" class="user-pk" value="{{ request.user.pk }}" />
+    <input type="hidden" class="entry-pk" value="{{ entry.pk }}" />
+    {% if request.user.is_authenticated %}
+      {% is_voted entry.pk request.user.pk as vote %}
+      {% is_favorited entry.pk request.user.pk as favorite %}
+      <input type="hidden" class="vote-pk" value="{{ vote.pk }}"/>
+      <input type="hidden" class="favorite-pk" value="{{ favorite.pk }}"/>
+    {% endif %}
+
+    <a href="#""><i class="fa fa-chevron-up {% if vote.vote.value == "upvote" %} text-success {% endif %}" style="font-size:18px"></i></a> {{ entry.upvote_count }}
+
+    <a href="#""><i class="fa fa-chevron-down  {% if vote.vote.value == "downvote" %} text-danger {% endif %}" style="font-size:18px"></i></a> {{ entry.downvote_count }}
+
+    <a href="#""><i class="fa fa-tint {% if favorite %} text-success {% endif %}" style="font-size:14px"></i></a> {{entry.favorite_count }} by:{{ entry.created_by }}
+
+
     at:{{entry.created_at|date:"d.m.Y H:i" }}
   </p>
 </div>
+
+{% block extra_js %}
+  <script src="{% static 'js/new_interactions.js' %}"></script>
+{% endblock extra_js %}
