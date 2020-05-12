@@ -1,11 +1,25 @@
 # Yet Another Ekşi Sözlük Clone
 
-# Table of Contents <!-- :TOC: -->
+Here is a live version of the application: https://yasozluk.herokuapp.com/
+
+# Table of Contents <!-- :TOC_3: -->
 - [Yet Another Ekşi Sözlük Clone](#yet-another-ekşi-sözlük-clone)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contributors](#contributors)
 - [Screenshots](#screenshots)
+  - [Homepage](#homepage)
+  - [Signup](#signup)
+  - [Login](#login)
+  - [Entries of a topic](#entries-of-a-topic)
+  - [New topic](#new-topic)
+  - [Search topic](#search-topic)
+  - [List topics by a channel](#list-topics-by-a-channel)
+  - [User dropdown](#user-dropdown)
+  - [User entries](#user-entries)
+  - [User votes](#user-votes)
+  - [User favorites](#user-favorites)
+  - [Private messages](#private-messages)
+- [Contributors](#contributors)
 
 # Installation
 
@@ -25,7 +39,7 @@
 4. Install the requirements:
 
     `$ pip install -r requirements.txt`
-    
+
 5. Create database
 
     `$ psql`
@@ -44,17 +58,30 @@
 2. Open http://localhost:8000 to view it in the browser.
 
 # Screenshots
-
-![Screenshot-1](screenshots/ss1.png)
-![Screenshot-2](screenshots/ss2.png)
-![Screenshot-3](screenshots/ss3.png)
-![Screenshot-4](screenshots/ss4.png)
-![Screenshot-5](screenshots/ss5.png)
-![Screenshot-6](screenshots/ss6.png)
-![Screenshot-7](screenshots/ss7.png)
-![Screenshot-8](screenshots/ss8.png)
-![Screenshot-9](screenshots/ss9.png)
-![Screenshot-10](screenshots/ss10.png)
+## Homepage
+![homepage](screenshots/homepage.png)
+## Signup
+![signup](screenshots/signup.png)
+## Login
+![login](screenshots/login.png)
+## Entries of a topic
+![topic_entries](screenshots/topic_entries.png)
+## New topic
+![new_topic](screenshots/new_topic.png)
+## Search topic
+![search_topic](screenshots/search_topic.png)
+## List topics by a channel
+![list_topic_by_channel](screenshots/list_topic_by_channel.png)
+## User dropdown
+![user_dropdown](screenshots/user_dropdown.png)
+## User entries
+![user_profile_entries](screenshots/user_profile_entries.png)
+## User votes
+![user_profile_votes](screenshots/user_profile_votes.png)
+## User favorites
+![user_profile_favorites](screenshots/user_profile_favorites.png)
+## Private messages
+![messages](screenshots/messages.png)
 
 # Contributors
 
