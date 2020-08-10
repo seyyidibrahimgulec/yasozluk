@@ -46,6 +46,7 @@ class Entry(models.Model):
 
     def get_random_most_liked_entries(top_n=20, pick_n=5):
         # TODO: increase top_n after database increased
+        #elmaa
         """
         Returns random "pick_n" entries of most liked "top_n" entries
         """
